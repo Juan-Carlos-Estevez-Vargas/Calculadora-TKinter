@@ -15,19 +15,22 @@ ventana.configure(bg="#202020")
 historial = StringVar()
 historial.set(" ")
 
-Hist = Label(ventana, textvariable=historial, width=30, justify='right', bg="#202020", foreground='white', font=('arial', 10, 'bold'), bd=4)
+Hist = Label(ventana, textvariable=historial, width=30, justify='right',
+             bg="#202020", foreground='white', font=('arial', 10, 'bold'), bd=4)
 Hist.grid(row=0, column=2, columnspan=10)
 
-inputText = StringVar()
+input_text = StringVar()
 
 grados = StringVar()
 grados.set("grau")
 
-RG = Button(ventana, highlightbackground="blue", highlightthickness=2, bd=4, textvariable=grados, width=8, height=1, font=("arial", 8))
+RG = Button(ventana, highlightbackground="blue", highlightthickness=2,
+            bd=4, textvariable=grados, width=8, height=1, font=("arial", 8))
 RG.grid(row=0, column=1)
 
 # Entrada de datos suministrada por el usuario
-entrada = Entry(ventana, text=inputText, width=20, justify='right', bg="#202020", font=('arial', 22, "bold"), bd=5, foreground="white")
+entrada = Entry(ventana, text=input_text, width=20, justify='right',
+                bg="#202020", font=('arial', 22, "bold"), bd=5, foreground="white")
 entrada.grid(row=1, column=0, columnspan=8, padx=5, pady=15, ipady=5)
 
 # Matriz con la disposición de los botones
@@ -40,7 +43,7 @@ key_matrix = [["sin", "cos", "tan", "C", "<--"],
               [u"\u221Ax", "(", "0", ".", "="]]
 
 btn_dict = {}  # dicionario para montar Botones
-resp = 0  # opcion usada para respuestas
+respuesta = 0  # opcion usada para respuestas
 mc = 0  # contenido memoria mr
 p = ""  # numero en str de parentesis abiertos
 last = ""  # ultimo contenido del visor
@@ -56,45 +59,63 @@ else:
     w = 6  # largura botones para Windows
 
 # Calcula la raiz cuadrada de un número
+
+
 def R2(num):
     return num**.5
 
 # Calcula la raiz cúbica de un número
+
+
 def R3(num):
     return num**(1/3)
 
 # Calculo seno con grados
-def senx(x): 
+
+
+def senx(x):
     global Pi
     return sin(Pi*x/180)
 
 # Calculo arcoseno en grados
-def asenx(x): 
+
+
+def asenx(x):
     global Pi
     return asin(x)*180/Pi
 
 # Calculo coseno en grados
-def cosx(x):  
+
+
+def cosx(x):
     global Pi
     return cos(Pi*x/180)
 
 # Calculo arcoseno en grados
-def acosx(x):  
+
+
+def acosx(x):
     global Pi
     return acos(x)*180/Pi
 
 # Calculo tangente en grados
-def tanx(x): 
+
+
+def tanx(x):
     global Pi
     return tan(Pi*x/180)
 
 # Calculo arcotangente en grados
-def atanx(x):  
+
+
+def atanx(x):
     global Pi
     return atan(x)*180/Pi
 
 # TriABC Triángulo de lados A , B , C
-def TriLabc(a=0, b=0, c=0):  
+
+
+def TriLabc(a=0, b=0, c=0):
     global last
     ok = ""
 
@@ -102,7 +123,7 @@ def TriLabc(a=0, b=0, c=0):
     if a == b == c == 0:
         ok = "Sin LADOS a b c !!!"
         return ok
-    
+
     # Si si se suministraron todos los lados y ninguno es 0
     elif a != 0 and b != 0 and c != 0:
         # Si a + b es mayor a c estamos frente a dos posibles casos
@@ -113,7 +134,7 @@ def TriLabc(a=0, b=0, c=0):
                 if a == int(a) and b == int(b) and c == int(c):
                     ok += " Pitagórico"
             else:
-                pass 
+                pass
         else:
             ok = "Triângulo no existe"
 
@@ -160,7 +181,9 @@ def TriLabc(a=0, b=0, c=0):
     return ok
 
 # Activa las segundas funciones
-def f2_operation(operation=""): 
+
+
+def f2_operation(operation=""):
     global f2
 
     if operation == "D":
@@ -182,7 +205,7 @@ def f2_operation(operation=""):
         btn_dict["btn_Hex"].configure(text="Hex")
         btn_dict["btn_Pi"].configure(text="Pi")
         f2 = 0
-    else: 
+    else:
         btn_dict["btn_2ªf"].configure(bg="cyan")
         btn_dict[tecla_raiz].configure(text=f"R2(")
         btn_dict["btn_."].configure(text=f",")
@@ -194,27 +217,33 @@ def f2_operation(operation=""):
         btn_dict["btn_Pi"].configure(text="Tri")
         f2 = 1
 
+
 def decima(num):
     n_int = int(num)
 
+    # Si el número es entero devolvemos su representación en string
     if num == n_int:
         return str(num)
-    
+
     fs = str(num+1*(num < .0001))[str(num+1).find(".")+1:]
 
     for x in range(len(fs)):
         a = fs[x:(x+1+fs[x+1:].find(fs[x]))]
-        rep, dizima = (fs.count(a), a)
-        if len(dizima) > 0 and fs.count(dizima*rep) > 0 and rep > (11/len(dizima)) and a != "0":
+        rep, decima = (fs.count(a), a)
+
+        if len(decima) > 0 and fs.count(decima*rep) > 0 and rep > (11/len(decima)) and a != "0":
             break
+
     np = fs[:x]
-    denumer = int((len(dizima) == 0)*"10"+len(dizima)*"9")*10**len(np)
-    numer = int(str(n_int)+np+dizima) - int(str(n_int)+np) + \
-        int(str(n_int)+fs)*(len(dizima) == 0)
-    return f"({numer}/{denumer})"
+    denominador = int((len(decima) == 0)*"10"+len(decima)*"9")*10**len(np)
+    numerador = int(str(n_int)+np+decima) - int(str(n_int)+np) + \
+        int(str(n_int)+fs)*(len(decima) == 0)
+    return f"({numerador}/{denominador})"
 
 # Calcula a entre b
-def a_b(numero):  
+
+
+def a_b(numero):
     aux = 1
 
     if numero < 0:
@@ -230,68 +259,79 @@ def a_b(numero):
     elif fraccion > 1e-6:
         fraccion = round(fraccion, 15)
 
-    lst = []
+    lista = []
     exponencial = 0
     for exp in range(16, 3, -1):
         if str(1+fraccion).count("0"*exp) == 1 and fraccion < 1e-5:
             exponencial = exp-1
             break
     fraccion *= 10**exponencial
-    while fraccion > 1e-8 and len(lst) < 22:
+    while fraccion > 1e-8 and len(lista) < 22:
         a = 1/fraccion  # sem arredondamento
         b = int(a)
-        if len(str(b)) > 4 and len(lst) > 2:  # Limites
+        if len(str(b)) > 4 and len(lista) > 2:  # Limites
             break
-        lst.append(b)
+        lista.append(b)
         fraccion = a-b
-    #print("Numeros encontrados",*lst)
-    if len(lst) % 2:
-        impar = lst[-1]
+
+    if len(lista) % 2:
+        impar = lista[-1]
         par = 0
-        lst = lst+[0, 0, 0]
+        lista = lista+[0, 0, 0]
     else:
-        par = lst[-1]
+        par = lista[-1]
         impar = 0
-        lst = lst+[0, 0]
-    numer = lst[-1]
-    denumer = lst[-2]*numer+1*(lst[-1] > 0)
-    for i in range(3, len(lst)+1, 2):
-        numer = lst[-i]*denumer+1*(lst[-i+1] > 0)*(lst[-i+2]
-                                                   == 0)+numer*(lst[-i+2] > 0)+par*(lst[-i+2] == 0)
-        denumer = lst[-i-1]*numer+1*(lst[-i] > 0)*(lst[-i+1]
-                                                   == 0)+denumer*(lst[-i+1] > 0)+impar*(lst[-i+1] == 0)
-    denumer *= 10**exponencial
-    numer2 = numer+1*(lst[0] > 0)*(lst[1] == 0)
-    numer = (numer2 + numero_entero*denumer)*aux
-    return f"({numer}/{denumer})"
+        lista = lista+[0, 0]
+
+    numerador = lista[-1]
+    denominador = lista[-2]*numerador+1*(lista[-1] > 0)
+
+    for i in range(3, len(lista)+1, 2):
+        numerador = lista[-i]*denominador+1*(lista[-i+1] > 0)*(
+            lista[-i+2] == 0)+numerador*(lista[-i+2] > 0)+par*(lista[-i+2] == 0)
+        denominador = lista[-i-1]*numerador+1*(lista[-i] > 0)*(
+            lista[-i+1] == 0)+denominador*(lista[-i+1] > 0)+impar*(lista[-i+1] == 0)
+
+    denominador *= 10**exponencial
+    numer2 = numerador+1*(lista[0] > 0)*(lista[1] == 0)
+    numerador = (numer2 + numero_entero*denominador)*aux
+    return f"({numerador}/{denominador})"
 
 # Función para convertir entero en romano
+
+
 def roman(num):
     # tabela em Dicionarios dos simbolos usados
-    tablaRomanos = {1: {"1": "I", "4": "IV", "5": "V", "9": "IX"}, 2: {"1": "X", "4": "XL", "5": "L", "9": "XC"}, 3: {"1": "C", "4": "CD", "5": "D", "9": "CM"}, 4: {
+    tabla_romanos = {1: {"1": "I", "4": "IV", "5": "V", "9": "IX"}, 2: {"1": "X", "4": "XL", "5": "L", "9": "XC"}, 3: {"1": "C", "4": "CD", "5": "D", "9": "CM"}, 4: {
         "1": "M", "4": "iv", "5": "v", "9": "ix"}, 5: {"1": "x", "4": "xl", "5": "l", "9": "xc"}, 6: {"1": "c", "4": "cd", "5": "d", "9": "cm"}, 7: {"1": "m"}}
-    longitudNumero = len(num)
-    if longitudNumero == 0:
+    longitud_numero = len(num)
+
+    if longitud_numero == 0:
         return ""
     if num.isdecimal():
         num = int(num)
         if num > 3999999:
             return ""
-        return "".join([tablaRomanos[longitudNumero-i][n] if tablaRomanos[longitudNumero-i].get(n) else (tablaRomanos[longitudNumero-i]["5"]+(int(n)-5)*(tablaRomanos[longitudNumero-i]["1"]) if n > "5" else (int(n))*(tablaRomanos[longitudNumero-i]["1"])) for i, n in enumerate(str(num))])
+        return "".join([tabla_romanos[longitud_numero-i][n] if tabla_romanos[longitud_numero-i].get(n) else (tabla_romanos[longitud_numero-i]["5"]+(int(n)-5)*(tabla_romanos[longitud_numero-i]["1"]) if n > "5" else (int(n))*(tabla_romanos[longitud_numero-i]["1"])) for i, n in enumerate(str(num))])
     else:
         letras = "IVXLCDMivxlcdm "
         num = num + " "
         ok = [i for i in num if i not in letras]
+
         if len(ok):
-            print("letras em Romano no disponibles: ", ok)
+            print("letras en Romano no disponibles: ", ok)
             return ""
-        tablaRomanos2 = {" ": 0, "I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000,
-                "i": 1000, "v": 5000, "x": 10000, "l": 50000, "c": 100000, "d": 500000, "m": 1000000}
-        return str(sum([a if (a := tablaRomanos2[num[longitudNumero-i]]) >= tablaRomanos2[num[longitudNumero-i+1]] else -a for i in range(1, longitudNumero+1)]))
+        tabla_romanos2 = {" ": 0, "I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000,
+                          "i": 1000, "v": 5000, "x": 10000, "l": 50000, "c": 100000, "d": 500000, "m": 1000000}
+
+        return str(sum([a if (a := tabla_romanos2[num[longitud_numero-i]]) >= tabla_romanos2[num[longitud_numero-i+1]] else -a for i in range(1, longitud_numero+1)]))
+
+# Botón memoria mr
 
 
-def cor_mem():  # cor do botao memoria mr
+def cor_mem():
     global mc
+
     if mc < 0:
         btn_dict["btn_mr"].configure(bg="magenta")
     elif mc > 0:
@@ -300,256 +340,295 @@ def cor_mem():  # cor do botao memoria mr
         btn_dict["btn_mr"].configure(bg="light grey")
 
 # Botón para intercambiar entre radianes y grados
+
+
 def grau(self):
     global grados
     if grados.get() == "rad":
-        grados.set("grau")
+        grados.set("grad")
     else:
         grados.set("rad")
 
 
 def cop_yx(e):
-    global inputText, historial, last_ant
-    inputText.set(historial.get())  # atualiza 2º visor com o 1º visor
+    global input_text, historial, last_ant
+    input_text.set(historial.get())  # actualiza 2º visor como 1º visor
     if len(last_ant) > 0:
         historial.set(last_ant.pop())
 
 
-# executa função grau se clicar com botao nª1 do mouse
+# executa funçión grad al clicar con botón nª1 del mouse
 RG.bind("<Button-1>", grau)
-Hist.bind("<Button-1>", cop_yx)  # executa função cop_xy
+Hist.bind("<Button-1>", cop_yx)  # executa funçión cop_xy
 
 # Calcula una operación según sea la tecla presionada por el usuario
+
+
 def Calcula(event):
     global Pi, last, mc, f2, p, historial, last_ant, last_err
     botonPresionado = event.widget.cget("text")
-    global key_matrix, inputText, resp
+    global key_matrix, input_text, respuesta
 
     try:
         if botonPresionado == u"\u221Ax":
-            if float(eval(inputText.get())) < 0:
-                last = inputText.get()
-                inputText.set("Numero Negativo, ERROR")
+            if float(eval(input_text.get())) < 0:
+                last = input_text.get()
+                input_text.set("Numero Negativo, ERROR")
                 btn_dict["btn_<--"].configure(bg="green")
                 return
             last_ant.append(last)
-            last = inputText.get()
-            resp = float(eval(inputText.get())**(0.5))
-            inputText.set(str(resp))
+            last = input_text.get()
+            respuesta = float(eval(input_text.get())**(0.5))
+            input_text.set(str(respuesta))
 
         elif botonPresionado == "R2(":
             p = str(int("0"+p) + 1)
-            inputText.set(inputText.get()+"R2(")
+            input_text.set(input_text.get()+"R2(")
 
         elif botonPresionado == "1/x":
             last_ant.append(last)
-            last = inputText.get()
-            resp = 1/float(eval(inputText.get()))
-            inputText.set(str(resp))
+            last = input_text.get()
+            respuesta = 1/float(eval(input_text.get()))
+            input_text.set(str(respuesta))
+
         elif botonPresionado == "Hex":
-            num = int(float(inputText.get()))
+            num = int(float(input_text.get()))
             tab = ["0", "1", "2", "3", "4", "5", "6", "7",
                    "8", "9", "A", "B", "C", "D", "E", "F"]
             hex = ""
+
             while num > 0:
                 r = num % 16
                 hex = tab[r]+hex
                 num = num//16
+
             last_ant.append(last)
-            last = inputText.get()
-            inputText.set(hex)
+            last = input_text.get()
+            input_text.set(hex)
+
         elif botonPresionado == "x²":
             last_ant.append(last)
-            last = inputText.get()
-            resp = float(eval(inputText.get()))**2
-            inputText.set(str(resp))
+            last = input_text.get()
+            respuesta = float(eval(input_text.get()))**2
+            input_text.set(str(respuesta))
+
         elif botonPresionado == " Pi":
             last_ant.append(last)
-            last = inputText.get()
-            inputText.set(inputText.get()+"Pi")
+            last = input_text.get()
+            input_text.set(input_text.get()+"Pi")
+
         elif botonPresionado == "Tri":
-            inputText.set("TriLabc(")
+            input_text.set("TriLabc(")
             p = str(int("0"+p) + 1)
+
         elif botonPresionado == "x<>y":
-            trc = inputText.get()
-            inputText.set(last)
+            trc = input_text.get()
+            input_text.set(last)
             last = trc
         elif botonPresionado == "a/b":
-            if "ERROU" in inputText.get():
+            if "ERROR" in input_text.get():
                 return
-            num = float(eval(inputText.get()))
+
+            num = float(eval(input_text.get()))
             last_ant.append(last)
-            last = inputText.get()
+            last = input_text.get()
             historial.set(decima(num))
-            inputText.set(a_b(num))
+            input_text.set(a_b(num))
+
         elif botonPresionado == "Rom":
-            resp = roman(inputText.get())
-            if len(resp) > 0:
+            respuesta = roman(input_text.get())
+            if len(respuesta) > 0:
                 last_ant.append(last)
-                last = inputText.get()
-                inputText.set(resp)
+                last = input_text.get()
+                input_text.set(respuesta)
+
         elif botonPresionado == "2ªf":
-            f2_operation()  # desativa f2 ou ativa
+            f2_operation()  # desactiva o activa f2
+
         elif botonPresionado[-1] == "(" or botonPresionado[-1] == ")":
             pc = int("0"+p)
+
             if f2 == 0:
                 p = str(pc + 1)
-                inputText.set(inputText.get() + "(")
+                input_text.set(input_text.get() + "(")
                 btn_dict["btn_("].configure(text=f"{p}(")
             else:
                 if pc > 0:
                     p = str(pc - 1)
                     if pc == 1:
                         p = ""
-                    inputText.set(inputText.get() + ")")
+                    input_text.set(input_text.get() + ")")
                     btn_dict["btn_("].configure(text=f"{p})")
+
         elif botonPresionado == "C":
-            if inputText.get() == "":
+            if input_text.get() == "":
                 historial.set("")
+
             p = ""
-            f2_operation("D")  # Desativa 2ª função
-            inputText.set("")
+            f2_operation("D")  # Desactiva 2ª funçión
+            input_text.set("")
             btn_dict["btn_<--"].configure(bg="light grey")
+
         elif botonPresionado == "x!":
             def fact(n): return 1 if n == 0 else n*fact(n-1)
-            num = fact(int(inputText.get()))
+            num = fact(int(input_text.get()))
             last_ant.append(last)
-            last = inputText.get()
-            inputText.set(str(num))
+            last = input_text.get()
+            input_text.set(str(num))
+
         elif botonPresionado == "<--":
-            resp = inputText.get()
-            if "ERROU" in resp:
-                inputText.set(last_err)
+            respuesta = input_text.get()
+            if "ERROR" in respuesta:
+                input_text.set(last_err)
                 btn_dict["btn_<--"].configure(bg="light grey")
             else:
-                if resp[-1] == "(":
+                if respuesta[-1] == "(":
                     p = str(int("0"+p) - 1)
                     if p == "0":
                         p = " "
-                    btn_dict["btn_("].configure(text=f"{p}{resp[-1]}")
+                    btn_dict["btn_("].configure(text=f"{p}{respuesta[-1]}")
                     f2_operation("D")  # Desativa 2ª função
-                if resp[-1] == ")":
+                if respuesta[-1] == ")":
                     p = str(int("0"+p) + 1)
-                    btn_dict["btn_("].configure(text=f"{p}{resp[-1]}")
+                    btn_dict["btn_("].configure(text=f"{p}{respuesta[-1]}")
                     f2_operation("A")  # Ativa 2ª função
-                inputText.set(resp[:-1])
+                input_text.set(respuesta[:-1])
+
         elif botonPresionado[-3:] == "sin":
             p = str(int("0"+p) + 1)
+
             if grados.get() == "rad":
                 if f2 == 0:
-                    inputText.set(inputText.get()+"sin(")
+                    input_text.set(input_text.get()+"sin(")
                 else:
-                    inputText.set(inputText.get()+"asin(")
+                    input_text.set(input_text.get()+"asin(")
             else:
                 if f2 == 0:
-                    inputText.set(inputText.get()+"senx(")
+                    input_text.set(input_text.get()+"senx(")
                 else:
-                    inputText.set(inputText.get()+"asenx(")
-            f2_operation("D")  # zera 2ª função
+                    input_text.set(input_text.get()+"asenx(")
+            f2_operation("D")
+
         elif botonPresionado[-3:] == "cos":
             p = str(int("0"+p) + 1)
             if grados.get() == "rad":
                 if f2 == 0:
-                    inputText.set(inputText.get()+"cos(")
+                    input_text.set(input_text.get()+"cos(")
                 else:
-                    inputText.set(inputText.get()+"acos(")
+                    input_text.set(input_text.get()+"acos(")
             else:
                 if f2 == 0:
-                    inputText.set(inputText.get()+"cosx(")
+                    input_text.set(input_text.get()+"cosx(")
                 else:
-                    inputText.set(inputText.get()+"acosx(")
-            f2_operation("D")  # Zera 2ª função
+                    input_text.set(input_text.get()+"acosx(")
+            f2_operation("D")
+
         elif botonPresionado[-3:] == "tan":
             p = str(int("0"+p) + 1)
             if grados.get() == "rad":
                 if f2 == 0:
-                    inputText.set(inputText.get()+"tan(")
+                    input_text.set(input_text.get()+"tan(")
                 else:
-                    inputText.set(inputText.get()+"atan(")
+                    input_text.set(input_text.get()+"atan(")
             else:
                 if f2 == 0:
-                    inputText.set(inputText.get()+"tanx(")
+                    input_text.set(input_text.get()+"tanx(")
                 else:
-                    inputText.set(inputText.get()+"atanx(")
-            f2_operation("D")  # zera 2ª função
+                    input_text.set(input_text.get()+"atanx(")
+            f2_operation("D")
+
         elif botonPresionado == "mc":
             mc = 0
             cor_mem()
+
         elif botonPresionado == "mr":
-            if inputText.get() == "":
-                inputText.set("("+str(mc)+")")
+            if input_text.get() == "":
+                input_text.set("("+str(mc)+")")
             else:
-                if inputText.get()[-1] in "1234567890":
-                    inputText.set("("+str(mc)+")")
+                if input_text.get()[-1] in "1234567890":
+                    input_text.set("("+str(mc)+")")
                 else:
-                    last = inputText.get()
-                    inputText.set(inputText.get()+"("+str(mc)+")")
+                    last = input_text.get()
+                    input_text.set(input_text.get()+"("+str(mc)+")")
+
         elif botonPresionado == "m+":
-            pass
-            mc += float(inputText.get())
+            mc += float(input_text.get())
             cor_mem()
+
         elif botonPresionado == "m-":
-            pass
-            mc -= float(inputText.get())
+            mc -= float(input_text.get())
             cor_mem()
+
         elif botonPresionado == ",":
-            resp = inputText.get()
-            if len(resp) > 2:
-                inputText.set(resp+",")
+            respuesta = input_text.get()
+            if len(respuesta) > 2:
+                input_text.set(respuesta+",")
 
         elif botonPresionado == ".":
-            resp = inputText.get()
-            if resp == "":
-                inputText.set(resp+".")
-            elif resp[-1] != ".":
-                if len(resp) > 2:
-                    if resp[-2] != ".":
-                        inputText.set(resp+".")
+            respuesta = input_text.get()
+            if respuesta == "":
+                input_text.set(respuesta+".")
+            elif respuesta[-1] != ".":
+                if len(respuesta) > 2:
+                    if respuesta[-2] != ".":
+                        input_text.set(respuesta+".")
                 else:
-                    inputText.set(resp+".")
+                    input_text.set(respuesta+".")
+
         elif botonPresionado == "=":
-            if "ERROU" in inputText.get():
-                inputText.set(last_err)
+            if "ERROR" in input_text.get():
+                input_text.set(last_err)
                 btn_dict["btn_<--"].configure(bg="light grey")
             else:
                 last_ant.append(last)
-                last = inputText.get().split()[-1]
+                last = input_text.get().split()[-1]
+
                 while last[:2] == "00":
                     last = last[1:]
                 c0 = last[last.find("."):].count("0")
                 c9 = last[last.find("."):].count("9")
+
                 if c9 > 8 or c0 > 8:
                     last = str(round(float(last), max(c0, c9)-1))
-                resp = eval(last)
-                if type(resp) != type("A"):
-                    if resp > .1:
-                        resp = str(round(resp, 16))
+
+                respuesta = eval(last)
+                if type(respuesta) != type("A"):
+                    if respuesta > .1:
+                        respuesta = str(round(respuesta, 16))
                     else:
-                        resp = str(resp)
-                    if len(resp) > 24:
-                        resp = str(float(resp))
-                if resp == last:
+                        respuesta = str(respuesta)
+                    if len(respuesta) > 24:
+                        respuesta = str(float(respuesta))
+
+                if respuesta == last:
                     last = last_ant.pop()
-                inputText.set(resp)
+                input_text.set(respuesta)
                 historial.set(last)
                 f2_operation("D")  # zera 2ª função
         else:
-            inputText.set(inputText.get()+str(botonPresionado.strip()))
+            input_text.set(input_text.get()+str(botonPresionado.strip()))
             cor_mem()
     except:
-        last_err = inputText.get()
-        inputText.set("ERROU")
+        last_err = input_text.get()
+        input_text.set("ERROU")
         btn_dict["btn_<--"].configure(bg="green")
+
 
 # Construyendo los botones en la ventana
 for i in range(len(key_matrix)):
     for j in range(len(key_matrix[i])):
-        btn_dict["btn_"+str(key_matrix[i][j])] = Button(ventana, bd=4, text=str(key_matrix[i][j]), width=w, height=2, font=("arial", 11, "bold"), foreground='white', background="#3b3b3b")
+        btn_dict["btn_"+str(key_matrix[i][j])] = Button(ventana, bd=4, text=str(key_matrix[i][j]),
+                                                        width=w, height=2, font=("arial", 11, "bold"), foreground='white', background="#3b3b3b")
         btn_dict["btn_"+str(key_matrix[i][j])].grid(row=i+2, column=j+1)
         btn_dict["btn_"+str(key_matrix[i][j])].bind('<Button-1>', Calcula)
 
-btn_dict["btn_sin"].configure(highlightbackground="blue", highlightthickness=2, bd=2)
-btn_dict["btn_cos"].configure(highlightbackground="blue", highlightthickness=2, bd=2)
-btn_dict["btn_tan"].configure(highlightbackground="blue", highlightthickness=2, bd=2)
+btn_dict["btn_sin"].configure(
+    highlightbackground="blue", highlightthickness=2, bd=2)
+btn_dict["btn_cos"].configure(
+    highlightbackground="blue", highlightthickness=2, bd=2)
+btn_dict["btn_tan"].configure(
+    highlightbackground="blue", highlightthickness=2, bd=2)
+btn_dict["btn_="].configure(bg="cyan")
+
 
 ventana.mainloop()
